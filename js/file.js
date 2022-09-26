@@ -1,5 +1,6 @@
 var input = document.getElementById("a");
 var input1 = document.getElementById("b");
+var datas = localStorage.getItem("datas");
 function upload() {
 	input.click();
 }
@@ -154,6 +155,33 @@ function my() {
 	 h1.appendChild(h2)
 	 h1.appendChild(h4)
 	 h1.appendChild(h3)
-	 document.body.appendChild(pg)
-	 document.body.appendChild(h1)
+	 LeftPosition = (screen.width) ? (screen.width-800)/2 : 0;
+     TopPosition = (screen.height) ? (screen.height-200)/2 : 0;
+     settings ='height=200,width=800,top='+TopPosition+',left='+LeftPosition+',scrollbars=yes,resizable=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes'
+	 newWindow = window.open('',datas,settings);  
+	 newWindow.document.head.innerHTML += `<title> file reading application </title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<style>
+.highlight {
+    color: red;
+}
+.highlight1 {
+    color: blue;
+}
+th, td {
+    text-align: left;
+	padding: 8px;
+}
+tr:nth-child(even) { background-color: #f2f2f2 }
+</style>`
+	 newWindow.document.body.appendChild(pg);
+	 newWindow.document.body.appendChild(h1);
+	 if(datas) {
+        localStorage.setItem("datas", parseInt(datas)+1);
+	 }
+	 else {
+		localStorage.setItem("datas", 1);
+	 }
+	 location.reload()
 }
