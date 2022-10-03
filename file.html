@@ -37,6 +37,12 @@ tr:nth-child(even) { background-color: #f2f2f2 }
 <script>
 var input = document.getElementById("a");
 var input1 = document.getElementById("b");
+var pg1=document.createElement("table")
+pg1.style="width:100%;display:none"
+var mismatch=document.createElement("table")
+mismatch.style="width:100%;display:none"
+var match=document.createElement("table")
+match.style="width:100%;display:none"
 function upload() { // for upload image
 	input.click();
 }
@@ -47,6 +53,7 @@ var result='';
 var name='';
 var result1='';
 var name1='';
+var start=false
 input.onchange = function () { // for upload image
 	var file = input.files[0];
 	name=file.name
@@ -99,8 +106,6 @@ function my() {
 	 var n1=arr1.length
 	 var pg=document.createElement("table")
 	 pg.style="width:100%"
-	 var pg1=document.createElement("table")
-	 pg1.style.width="100%"
 	 var summary=document.createElement("tr")
 	 summary.style.width="100%"
 	 var summary1=document.createElement("th")
@@ -134,7 +139,9 @@ function my() {
 	 arow.appendChild(acolumn3)
 	 arow.appendChild(acolumn4)
 	 arow.appendChild(acolumn5)
-	 pg1.appendChild(arow)
+	 pg1.appendChild(arow.cloneNode(true))
+	 mismatch.appendChild(arow.cloneNode(true))
+	 match.appendChild(arow.cloneNode(true))
 	 for(var i=0;i<n && i < n1;i++) {
 	 if(arr[i].trim() && arr1[i].trim()) {
 	 text=''
@@ -194,11 +201,49 @@ function my() {
 	 row.appendChild(column3)
 	 row.appendChild(column4)
 	 row.appendChild(column5)
-	 pg1.appendChild(row)
+	 pg1.appendChild(row.cloneNode(true))
+	 if(torf) {
+	    mismatch.appendChild(row.cloneNode(true))
 	 }
+	 else {
+	     match.appendChild(row.cloneNode(true))
+	 }
+	 console.log(torf)
+	 }
+	 torf=false
 	 }
 	 ma.appendChild(pg)
 	 ma.appendChild(pg1)
+	 pg1.style.display=""
+	 ma.appendChild(mismatch)
+	 mismatch.style.display="none"
+	 ma.appendChild(match)
+	 match.style.display="none"
+	 start=true
+}
+document.onkeydown = (e) => {
+  if (e.ctrlKey && e.key === 's') {
+    e.preventDefault();
+	if(start) {
+    var value = prompt("Please search keyword :", "match or mismatch");
+	value = value.toLowerCase()
+	if(value == "match") {
+	   match.style.display=""
+	   mismatch.style.display="none"
+	   pg1.style.display="none"
+	}
+	else if(value == "mismatch") {
+	   match.style.display="none"
+	   mismatch.style.display=""
+	   pg1.style.display="none"
+	}
+	else {
+	   match.style.display="none"
+	   mismatch.style.display="none"
+	   pg1.style.display=""
+	}
+	}
+  }
 }
 </script>
 </html>
