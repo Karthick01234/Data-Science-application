@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<title> file reading application </title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+</head>
+<style>
+.highlight {
+    color: red;
+}
+.highlight1 {
+    color: blue;
+}
+th, td {
+    text-align: left;
+	padding: 8px;
+	border:1px solid black;
+}
+tr:nth-child(even) { background-color: #f2f2f2 }
+</style>
+<body>
+<div id="round">
+<br> <br>
+<svg onclick="upload()" style="position:absolute;left:50%;top:50%" id="bold" enable-background="new 0 0 24 24" height="45" viewBox="0 0 24 24" width="45" xmlns="http://www.w3.org/2000/svg"><path d="m13.25 23h-2.5c-.689 0-1.25-.561-1.25-1.25v-4.25h-2.25c-.3 0-.571-.179-.689-.454s-.061-.595.145-.813l4.75-5c.283-.298.805-.298 1.088 0l4.75 5c.206.217.264.537.146.813s-.39.454-.69.454h-2.25v4.25c0 .689-.561 1.25-1.25 1.25z"/><path d="m18.673 4.927c-1.312-2.399-3.884-3.927-6.673-3.927-3.545 0-6.62 2.465-7.397 5.829-2.584.272-4.603 2.442-4.603 5.071 0 2.595 1.976 4.72 4.512 5.036-.051-.753.204-1.51.743-2.078l4.751-5.001c1.023-1.076 2.966-1.076 3.987 0l4.751 5c.502.529.757 1.221.75 1.921 2.593-.708 4.506-3.057 4.506-5.845 0-3.066-2.307-5.625-5.327-6.006z"/></svg>
+<p style="position:absolute;left:49%;top:58%" id="p1"> Upload File </p>
+</div>
+<input style="display:none" type="file" id="a" />
+</body>
+<script>
+var input = document.getElementById("a");
+function upload() { 
+	input.click();
+}
+var result={};
+var result1=''
+var name='';
+var n=0
+/* 
+input.onchange = function () { 
+	var file = input.files[0];
+	name=file.name
+	var reader = new FileReader()
+	reader.readAsText(file)
+	reader.onload = function() {
+		text = reader.result.split("\n")
+		pattern = prompt()
+		words = prompt()
+		// data structure element = [startswithcaps, endwithcaps, startswithsmalls, endwithsmalls, pattern, words, length, word count, repeated sentence, repeated words]
+		var n = text.length
+		for(var i =0; i<n; i++) {
+		   let x=text[i].trim()
+		   let y=x.length
+		   
+		}
+		console.log(reader.result)
+	}
+	reader.onerror = function() {
+	    console.log(reader.error);
+	}
+	reader.onloadend = function() {
+	 console.log(name)
+	 console.log(result)
+	}
+	}
+}
+*/
+/*
+input.onchange = function () { 
+	var file = input.files[0];
+	name=file.name
+	var chunkSize = 10;
+    var fileSize = (file.size - 1);
+
+    for(var i =0; i < fileSize; i += chunkSize) {
+        (function( fil, start ) {
+            var reader = new FileReader();
+            var blob = fil.slice(start, chunkSize + start);
+            reader.onload = function(e){
+                console.log(e.target.result);
+            };
+            reader.readAsText(blob);
+        })(file, i);
+    }
+} 
+*/
+function readFile(fil, start, chunkSize) {
+    return new Promise((resolve, reject)=> {
+      var reader = new FileReader();
+	  var blob = fil.slice(start, chunkSize + start);
+      reader.onload = function(e){
+	    result1=e.target.result
+		var arr=result1.split("\n")
+		n+=arr.length
+        /*console.log("reading .....");
+		console.log("Total Lines ..... "+n);*/
+		resolve()
+      }
+	  reader.readAsText(blob);
+	  })
+}
+input.onchange = async function () { 
+	var startTime = performance.now()
+	var file = input.files[0];
+	name=file.name
+	var chunkSize = 1024*1024;
+    var fileSize = (file.size - 1)/10;
+	console.log(fileSize);
+	console.log("reading .....")
+	for(var i =0; i < fileSize; i += chunkSize) {
+	  await readFile(file, i, chunkSize);
+	}
+	console.log("Total Lines ..... "+n)
+	var endTime = performance.now()
+	console.log(`Call to doSomething took ${(endTime - startTime)/1000} seconds`)
+} 
+</script>
+</html>

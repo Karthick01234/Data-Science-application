@@ -61,6 +61,7 @@ input.onchange = function () { // for upload image
 	reader.readAsText(file)
 	reader.onload = function() {
 	    result = reader.result
+		//localStorage["file"] = reader.result
 	}
 	reader.onerror = function() {
 	    console.log(reader.error);
@@ -244,6 +245,20 @@ document.onkeydown = (e) => {
 	}
 	}
   }
+  /*
+  else if (e.key === 'n') {
+     e.preventDefault();
+	 var fileContent = localStorage["file"];
+     var file = new File([fileContent], "my.html", {type: 'text/html'});
+	 console.log(fileContent)
+	 const url = window.URL.createObjectURL(file);
+	 window.location=url
+  }
+  */
+   else if (e.key === 'p') {
+     e.preventDefault();
+	 window.print()
+   }
 }
 </script>
 </html>
