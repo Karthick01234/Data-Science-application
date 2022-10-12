@@ -105,14 +105,14 @@ function my() {
 	 arr1=result1.split("\n")
 	 var n=arr.length
 	 var n1=arr1.length
+	 var mm=0
+	 var m=0
 	 var pg=document.createElement("table")
 	 pg.style="width:100%"
 	 var summary=document.createElement("tr")
 	 summary.style.width="100%"
 	 var summary1=document.createElement("th")
 	 var summary2=document.createElement("th")
-	 summary1.innerHTML="The file "+name+" contains "+n+" number of Lines"
-	 summary2.innerHTML="The file "+name1+" contains "+n1+" number of Lines"
 	 summary1.style.width="55%"
 	 summary2.style.width="45%"
 	 summary.appendChild(summary1) 
@@ -191,9 +191,11 @@ function my() {
 	 column2.innerHTML=text
 	 if(torf) {
 	    column3.innerHTML=" MISMATCH "
+		mm+=1
 	 }
 	 else {
 	    column3.innerHTML=" MATCH "
+		m+=1
 	 }
 	 column4.innerHTML=" "+no+" ) "
 	 column5.innerHTML=text1
@@ -213,6 +215,8 @@ function my() {
 	 }
 	 torf=false
 	 }
+	 summary1.innerHTML="The file "+name+" contains "+n+" number of Lines and "+mm+" mismatched Lines and "+m+" matched Lines."
+	 summary2.innerHTML="The file "+name1+" contains "+n1+" number of Lines and "+mm+" mismatched Lines and "+m+" matched Lines."
 	 ma.appendChild(pg)
 	 ma.appendChild(pg1)
 	 pg1.style.display=""

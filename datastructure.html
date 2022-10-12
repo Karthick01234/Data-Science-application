@@ -92,7 +92,12 @@ function readFile(fil, start, chunkSize) {
 	    result1=e.target.result
 		var arr=result1.split("\n")
 		n+=arr.length
-        /*console.log("reading .....");
+		/*var data = new Blob([arr], {type: 'text/plain'});
+		var link = document.createElement('a');
+        link.setAttribute('download', n+'.txt');
+        link.href = window.URL.createObjectURL(data);
+		link.click()
+        console.log("reading .....");
 		console.log("Total Lines ..... "+n);*/
 		resolve()
       }
@@ -104,7 +109,7 @@ input.onchange = async function () {
 	var file = input.files[0];
 	name=file.name
 	var chunkSize = 1024*1024;
-    var fileSize = (file.size - 1)/10;
+    var fileSize = (file.size - 1);
 	console.log(fileSize);
 	console.log("reading .....")
 	for(var i =0; i < fileSize; i += chunkSize) {
@@ -113,6 +118,62 @@ input.onchange = async function () {
 	console.log("Total Lines ..... "+n)
 	var endTime = performance.now()
 	console.log(`Call to doSomething took ${(endTime - startTime)/1000} seconds`)
-} 
+}
+const recognition = new webkitSpeechRecognition();
+recognition.continuous = false;
+recognition.interimResults = true;
+recognition.lang = 'en-IN';
+var finalTranscripts = '';
+var interimTranscripts = '';
+recognition.onresult = function(event) {
+	for(var i=event.resultIndex;i<event.results.length;i++) {
+	  var transcript = event.results[i][0].transcript;
+	  if(event.results[i].isFinal) {
+	    finalTranscripts += transcript;
+	  }
+	  else {
+	    interimTranscripts += transcript;
+	  }
+   }
+}
+document.onkeydown = (e) => { 
+  if (e.key === 's') {
+    e.preventDefault(); 
+	recognition.start();
+  }
+  else if (e.key === 'r') {
+    e.preventDefault(); 
+	recognition.stop();
+	console.log(finalTranscripts);
+	finalTranscripts = '';
+    interimTranscripts = '';
+  }
+  else if (e.key === 'u') {
+    var url = 'https://www.amazon.in/Apple-iPhone-13-Pro-128GB/dp/B09G99YPQM?ref_=Oct_DLandingS_D_5576c81e_62&smid=A14CZOWI0VEHLG'
+	var request = new Request('https://www.amazon.in/Apple-iPhone-13-Pro-128GB/dp/B09G99YPQM?ref_=Oct_DLandingS_D_5576c81e_62&smid=A14CZOWI0VEHLG')
+	//fetch(url)
+	fetch(request)
+	.then(res => res.text())
+	.then(text => {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(text, 'text/html');
+        var body = doc.querySelector('body').innerHTML;
+		console.log(body)
+	}).catch(err => console.log(err));
+  }
+  else if(e.key === 't') {
+     function makeHttpObject() {
+        if("XMLHttpRequest" in window)return new XMLHttpRequest();
+	    else if("ActiveXObject" in window)return new ActiveXObject("Msxml2.XMLHTTP");
+     }
+     var request = makeHttpObject();
+     request.open("GET", "https://www.amazon.in/Apple-iPhone-13-Pro-128GB/dp/B09G99YPQM?ref_=Oct_DLandingS_D_5576c81e_62&smid=A14CZOWI0VEHLG", true);
+     request.send();
+     request.onreadystatechange = function() {
+       if (request.readyState == 4)
+          console.log(request.responseText);
+     }
+  }
+}
 </script>
 </html>
