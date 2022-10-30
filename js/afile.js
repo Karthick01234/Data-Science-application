@@ -188,6 +188,40 @@ function my() {
 	 ma.appendChild(match)
 	 match.style.display="none"
 	 start=true
+	 var rem = Math.max(n,n1) - Math.min(n,n1);
+	 var noo = Math.min(n,n1);
+	 for(var k=0;k<rem;k++) {
+		var row =  document.createElement("tr")
+		//row.style.width="100%"
+		var column1 =  document.createElement("td")
+		//column1.style.width="5%"
+		var column2 =  document.createElement("td")
+		//column2.style.width="40%"
+		var column3 =  document.createElement("td")
+		//column3.style.width="10%"
+		var column4 =  document.createElement("td")
+		//column4.style.width="5%"
+		var column5 =  document.createElement("td")
+		//column5.style.width="40%"
+		column1.innerHTML=" "+(noo+1)+" )";
+		column3.innerHTML=" MISMATCH ";
+		column4.innerHTML=" "+(noo+1)+" )";
+		if(arr[k]) {
+			column2.innerHTML="<span class='highlight'>"+arr[k]+" </span>";
+			column5.innerHTML="<span class='highlight1'> No Line </span>";
+		}
+		else {
+			column5.innerHTML="<span class='highlight1'>"+arr[k]+" </span>";
+			column2.innerHTML="<span class='highlight'> No Line </span>";
+		}
+		row.appendChild(column1)
+		row.appendChild(column2)
+		row.appendChild(column3)
+		row.appendChild(column4)
+		row.appendChild(column5)
+		pg1.appendChild(row.cloneNode(true))
+		noo++;
+	 }
 }
 document.onkeydown = (e) => {
   if (e.ctrlKey && e.key === 's') {
